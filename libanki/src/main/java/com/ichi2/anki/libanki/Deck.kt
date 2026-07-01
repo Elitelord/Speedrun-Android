@@ -135,6 +135,10 @@ fun Order.toDisplayString(translations: Translations) =
         Order.REVERSE_ADDED -> translations.decksLatestAddedFirst()
         Order.RETRIEVABILITY_ASCENDING -> translations.deckConfigSortOrderRetrievabilityAscending()
         Order.RETRIEVABILITY_DESCENDING -> translations.deckConfigSortOrderRetrievabilityDescending()
+        // Added in the anki 26.05 backend our fork builds against (newer than this
+        // app's original 25.09.2 backend). Literal label avoids depending on a
+        // translation method that may be absent in this version.
+        Order.RELATIVE_OVERDUENESS -> "Relative overdueness"
         Order.UNRECOGNIZED -> throw IllegalArgumentException("Can't display an unknown enum value.")
     }
 

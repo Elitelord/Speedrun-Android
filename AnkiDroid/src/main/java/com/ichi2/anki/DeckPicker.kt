@@ -1310,6 +1310,38 @@ open class DeckPicker :
                 showDatabaseErrorDialog(DatabaseErrorDialogType.DIALOG_CONFIRM_DATABASE_CHECK)
                 return true
             }
+            R.id.action_interleave_mcat -> {
+                // Speedrun: toggle topic-aware MCAT interleaving on the shared engine.
+                Timber.i("DeckPicker:: Toggle MCAT interleaving")
+                launchCatchingTask {
+                    val defaultTopics =
+                        listOf("mcat::biobiochem", "mcat::chemphys", "mcat::psychsoc")
+                    val nowEnabled =
+                        withCol {
+                            val current = backend.getInterleaveConfig()
+                            val enabled = !current.enabled
+                            val tags = current.topicTagsList.ifEmpty { defaultTopics }
+                            backend.setInterleaveConfig(
+                                anki.scheduler.InterleaveConfig
+                                    .newBuilder()
+                                    .setEnabled(enabled)
+                                    .addAllTopicTags(tags)
+                                    .build(),
+                            )
+                            enabled
+                        }
+                    showSnackbar(
+                        if (nowEnabled) {
+                            "MCAT topic interleaving: ON"
+                        } else {
+                            "MCAT topic interleaving: OFF"
+                        },
+                        Snackbar.LENGTH_SHORT,
+                    )
+                    updateDeckList()
+                }
+                return true
+            }
             R.id.action_check_media -> {
                 Timber.i("DeckPicker:: Check media button pressed")
                 showMediaCheckDialog()
