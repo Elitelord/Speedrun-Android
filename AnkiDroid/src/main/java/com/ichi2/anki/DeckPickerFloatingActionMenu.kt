@@ -64,6 +64,7 @@ class DeckPickerFloatingActionMenu(
             // Show with animation
             binding.addSharedButton.visibility = View.VISIBLE
             binding.addDeckButton.visibility = View.VISIBLE
+            binding.addImportButton.visibility = View.VISIBLE
             binding.addFilteredDeckButton.visibility = View.VISIBLE
             binding.fabBGLayout.visibility = View.VISIBLE
             binding.fabMain.backgroundTintList = ColorStateList.valueOf(fabPressedColor)
@@ -73,22 +74,27 @@ class DeckPickerFloatingActionMenu(
             with(binding) {
                 addSharedButton.animate().translationY(0f).duration = 100
                 addDeckButton.animate().translationY(0f).duration = 70
+                addImportButton.animate().translationY(0f).duration = 85
                 addFilteredDeckButton.animate().translationY(0f).duration = 100
                 addSharedButton.animate().alpha(1f).duration = 100
                 addDeckButton.animate().alpha(1f).duration = 70
+                addImportButton.animate().alpha(1f).duration = 85
                 addFilteredDeckButton.animate().alpha(1f).duration = 100
             }
         } else {
             // Show without animation
             binding.addSharedButton.visibility = View.VISIBLE
             binding.addDeckButton.visibility = View.VISIBLE
+            binding.addImportButton.visibility = View.VISIBLE
             binding.addFilteredDeckButton.visibility = View.VISIBLE
             binding.fabBGLayout.visibility = View.VISIBLE
             binding.addSharedButton.alpha = 1f
             binding.addDeckButton.alpha = 1f
+            binding.addImportButton.alpha = 1f
             binding.addFilteredDeckButton.alpha = 1f
             binding.addSharedButton.translationY = 0f
             binding.addDeckButton.translationY = 0f
+            binding.addImportButton.translationY = 0f
             binding.addFilteredDeckButton.translationY = 0f
             binding.fabMain.isExtended = true
 
@@ -127,7 +133,9 @@ class DeckPickerFloatingActionMenu(
                 with(binding) {
                     addSharedButton.animate().alpha(0f).duration = 50
                     addDeckButton.animate().alpha(0f).duration = 100
+                    addImportButton.animate().alpha(0f).duration = 100
                     addFilteredDeckButton.animate().alpha(0f).duration = 100
+                    addImportButton.animate().translationY(400f).duration = 100
                     addSharedButton.animate().translationY(400f).duration = 100
                     addDeckButton
                         .animate()
@@ -141,6 +149,7 @@ class DeckPickerFloatingActionMenu(
                                     if (!isFABOpen) {
                                         addSharedButton.visibility = View.GONE
                                         addDeckButton.visibility = View.GONE
+                                        addImportButton.visibility = View.GONE
                                         addFilteredDeckButton.visibility = View.GONE
                                     }
                                 }
@@ -162,6 +171,7 @@ class DeckPickerFloatingActionMenu(
                                     if (!isFABOpen) {
                                         addSharedButton.visibility = View.GONE
                                         addDeckButton.visibility = View.GONE
+                                        addImportButton.visibility = View.GONE
                                         addFilteredDeckButton.visibility = View.GONE
                                     }
                                 }
@@ -176,6 +186,7 @@ class DeckPickerFloatingActionMenu(
                 // Close without animation
                 binding.addSharedButton.visibility = View.GONE
                 binding.addDeckButton.visibility = View.GONE
+                binding.addImportButton.visibility = View.GONE
                 binding.addFilteredDeckButton.visibility = View.GONE
                 binding.fabMain.isExtended = false
 
@@ -196,7 +207,9 @@ class DeckPickerFloatingActionMenu(
                 with(binding) {
                     addSharedButton.animate().alpha(0f).duration = 70
                     addDeckButton.animate().alpha(0f).duration = 50
+                    addImportButton.animate().alpha(0f).duration = 50
                     addFilteredDeckButton.animate().alpha(0f).duration = 50
+                    addImportButton.animate().translationY(600f).duration = 100
                     addSharedButton.animate().translationY(600f).duration = 100
                     addDeckButton
                         .animate()
@@ -210,6 +223,7 @@ class DeckPickerFloatingActionMenu(
                                     if (!isFABOpen) {
                                         addSharedButton.visibility = View.GONE
                                         addDeckButton.visibility = View.GONE
+                                        addImportButton.visibility = View.GONE
                                         addFilteredDeckButton.visibility = View.GONE
                                     }
                                 }
@@ -231,6 +245,7 @@ class DeckPickerFloatingActionMenu(
                                     if (!isFABOpen) {
                                         addSharedButton.visibility = View.GONE
                                         addDeckButton.visibility = View.GONE
+                                        addImportButton.visibility = View.GONE
                                         addFilteredDeckButton.visibility = View.GONE
                                     }
                                 }
@@ -245,6 +260,7 @@ class DeckPickerFloatingActionMenu(
                 // Close without animation
                 binding.addSharedButton.visibility = View.GONE
                 binding.addDeckButton.visibility = View.GONE
+                binding.addImportButton.visibility = View.GONE
                 binding.addFilteredDeckButton.visibility = View.GONE
                 binding.fabMain.isExtended = false
 
@@ -377,6 +393,15 @@ class DeckPickerFloatingActionMenu(
                 }
             }
         binding.addSharedButton.setOnClickListener(addSharedListener)
+        // Speedrun: import a deck straight from the add menu.
+        val addImportListener =
+            View.OnClickListener {
+                if (isFABOpen) {
+                    closeFloatingActionMenu(applyRiseAndShrinkAnimation = false)
+                    deckPicker.showImportFromFab()
+                }
+            }
+        binding.addImportButton.setOnClickListener(addImportListener)
 
         // Enable keyboard activation for Enter/DPAD_CENTER keys
         val addSharedKeyListener =

@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -15,6 +16,60 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
+
+        <!-- Speedrun: overall MCAT scores strip (tap to open the Progress page) -->
+        <LinearLayout
+            android:id="@+id/sr_score_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:baselineAligned="false"
+            android:background="?attr/selectableItemBackground"
+            android:paddingVertical="10dp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="MEMORY" android:textSize="11sp"
+                    android:textColor="?android:attr/textColorSecondary" />
+                <TextView android:id="@+id/sr_memory_value" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" tools:text="72%" android:textSize="22sp"
+                    android:textStyle="bold" android:textColor="?attr/colorPrimary" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="PERFORMANCE" android:textSize="11sp"
+                    android:textColor="?android:attr/textColorSecondary" />
+                <TextView android:id="@+id/sr_performance_value" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" tools:text="61%" android:textSize="22sp"
+                    android:textStyle="bold" android:textColor="?attr/colorPrimary" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="READINESS" android:textSize="11sp"
+                    android:textColor="?android:attr/textColorSecondary" />
+                <TextView android:id="@+id/sr_readiness_value" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" tools:text="504" android:textSize="22sp"
+                    android:textStyle="bold" android:textColor="?attr/colorPrimary" />
+            </LinearLayout>
+        </LinearLayout>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/pull_to_sync_wrapper"

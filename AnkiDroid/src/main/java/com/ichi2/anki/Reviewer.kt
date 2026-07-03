@@ -820,6 +820,18 @@ open class Reviewer :
         startActivityWithAnimation(intent, animation)
     }
 
+    // Speedrun: reviewer overflow items hidden to keep studying focused.
+    private val speedrunHiddenReviewerActions =
+        listOf(
+            R.id.action_toggle_whiteboard,
+            R.id.action_tag,
+            R.id.action_schedule,
+            R.id.action_replay,
+            R.id.action_toggle_mic_tool_bar,
+            R.id.action_open_deck_options,
+            R.id.action_toggle_auto_advance,
+        )
+
     // Related to https://github.com/ankidroid/Anki-Android/pull/11061#issuecomment-1107868455
     @NeedsTest("Order of operations needs Testing around Menu (Overflow) Icons and their colors.")
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -1028,6 +1040,14 @@ open class Reviewer :
             voicePlaybackIcon.isVisible = true
         } else {
             voicePlaybackIcon.setTitle(R.string.menu_enable_voice_playback)
+        }
+
+        // Speedrun: keep the in-review menu focused on study actions. Power
+        // features (whiteboard, tags, reschedule, media replay, voice playback,
+        // deck options) are hidden here to declutter — they remain reachable
+        // from the card browser / deck options elsewhere.
+        for (id in speedrunHiddenReviewerActions) {
+            menu.findItem(id)?.isVisible = false
         }
 
         increaseHorizontalPaddingOfOverflowMenuIcons(menu)

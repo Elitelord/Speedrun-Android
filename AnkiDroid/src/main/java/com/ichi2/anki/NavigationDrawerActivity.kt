@@ -43,6 +43,7 @@ import com.ichi2.anki.common.preferences.sharedPrefs
 import com.ichi2.anki.common.utils.android.HandlerUtils
 import com.ichi2.anki.dialogs.help.HelpDialog
 import com.ichi2.anki.libanki.CardId
+import com.ichi2.anki.settings.Prefs
 import com.ichi2.anki.utils.ext.showDialogFragment
 import com.ichi2.anki.workarounds.FullDraggableContainerFix
 import com.ichi2.utils.IntentUtil
@@ -209,6 +210,13 @@ abstract class NavigationDrawerActivity(
         }
         drawerToggle.isDrawerSlideAnimationEnabled = animationEnabled()
         drawerLayout.addDrawerListener(drawerToggle)
+
+        // Speedrun: the bottom navigation bar is the primary navigation, so the
+        // slide-out drawer is redundant — lock it closed on every screen so it
+        // can't be swiped open (the per-screen hamburger is removed separately).
+        if (Prefs.devBottomNavEnabled) {
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        }
 
         enablePostShortcut(this)
         val intent = Intent("com.ichi2.widget.UPDATE_WIDGET").setClassName("com.ichi2.widget", "WidgetPermissionReceiver")

@@ -1342,6 +1342,8 @@ open class DeckPicker :
                 }
                 return true
             }
+            // Speedrun: the three honest MCAT scores are reached via the home
+            // score header and the bottom-nav "Progress" tab (showMcatReadiness).
             R.id.action_check_media -> {
                 Timber.i("DeckPicker:: Check media button pressed")
                 showMediaCheckDialog()
@@ -1401,6 +1403,12 @@ open class DeckPicker :
             }
             showThemedToast(this@DeckPicker, TR.profilesBackupCreated(), false)
         }
+    }
+
+    // Speedrun: open the MCAT "Progress" page (three honest scores + per-section
+    // detail), computed on the shared Rust backend. Graphs live on their own page.
+    private fun showMcatReadiness() {
+        startActivity(SingleFragmentActivity.getIntent(this, StudyProgressFragment::class))
     }
 
     private fun showMediaCheckDialog() {
@@ -2084,6 +2092,64 @@ open class DeckPicker :
         launchCatchingTask {
             withProgress { viewModel.updateDeckList().join() }
         }
+        updateMcatScoreHeader()
+    }
+
+    // Speedrun: populate the overall Memory/Performance/Readiness strip above the
+    // deck list; tapping it opens the full Progress page.
+    private fun updateMcatScoreHeader() {
+        val header = findViewById<View?>(R.id.sr_score_header) ?: return
+        launchCatchingTask {
+            val defaultTopics =
+                listOf("mcat::biobiochem", "mcat::chemphys", "mcat::psychsoc")
+
+            data class Scores(
+                val memory: String,
+                val performance: String,
+                val readiness: String,
+            )
+
+            fun frac(r: anki.scheduler.MemoryScoreResponse): String {
+                val o = r.overall
+                return if (o.shown && o.cardsWithState > 0) "${Math.round(o.estimate * 100)}%" else "—"
+            }
+            val scores =
+                withCol {
+                    val tags =
+                        backend.getInterleaveConfig().topicTagsList.ifEmpty { defaultTopics }
+                    val mem =
+                        backend.computeMemoryScore(
+                            search = "",
+                            topicTags = tags,
+                            topicMinReviews = 0,
+                            deckMinReviews = 0,
+                        )
+                    val perf =
+                        backend.computePerformanceScore(
+                            search = "",
+                            topicTags = tags,
+                            topicMinReviews = 0,
+                            deckMinReviews = 0,
+                        )
+                    val rdy =
+                        backend.computeReadinessScore(
+                            search = "",
+                            topicTags = tags,
+                            topicMinReviews = 0,
+                            deckMinReviews = 0,
+                        )
+                    Scores(
+                        memory = frac(mem),
+                        performance = frac(perf),
+                        readiness = if (rdy.shown) "${Math.round(rdy.scaledEstimate)}" else "—",
+                    )
+                }
+            findViewById<TextView>(R.id.sr_memory_value).text = scores.memory
+            findViewById<TextView>(R.id.sr_performance_value).text = scores.performance
+            findViewById<TextView>(R.id.sr_readiness_value).text = scores.readiness
+            header.setOnClickListener { showMcatReadiness() }
+            header.visibility = View.VISIBLE
+        }
     }
 
     private fun createIcon(shortcutData: ShortcutData) {
@@ -2154,6 +2220,11 @@ open class DeckPicker :
      *
      * @see CreateDeckDialog
      */
+    // Speedrun: public entry point so the add (FAB) menu can offer "Import".
+    fun showImportFromFab() {
+        showImportDialog()
+    }
+
     fun showCreateDeckDialog() {
         val createDeckDialog =
             CreateDeckDialog(

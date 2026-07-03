@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package com.ichi2.anki
 
-import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -19,7 +18,6 @@ import com.ichi2.anki.BottomNavController.NavigationItem
 import com.ichi2.anki.browser.CardBrowserFragment
 import com.ichi2.anki.browser.CardBrowserViewModel
 import com.ichi2.anki.common.annotations.NeedsTest
-import com.ichi2.anki.pages.Statistics
 import com.ichi2.anki.settings.Prefs
 
 /**
@@ -84,13 +82,11 @@ private fun handleNavigationItemSelected(
             true
         }
         NavigationItem.STATS -> {
+            // Speedrun: the "Progress" tab shows the three honest MCAT scores;
+            // detailed graphs live behind its "View detailed graphs" button.
             backCallback.isEnabled = true
             showBottomNavFragment(
-                {
-                    Statistics().apply {
-                        arguments = Bundle().apply { putBoolean(Statistics.ARG_HIDE_BACK_BUTTON, true) }
-                    }
-                },
+                ::StudyProgressFragment,
                 item.tag,
                 contentWrapper,
                 fragmentContainer,

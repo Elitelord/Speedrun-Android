@@ -1,3 +1,31 @@
+# Speedrun (Android) — an MCAT study app built on AnkiDroid
+
+> **Exam: MCAT.** This is the Android half of **Speedrun**, a desktop + Android
+> MCAT study app forked from **[AnkiDroid](https://github.com/ankidroid/Anki-Android)**
+> (a port of [Anki](https://apps.ankiweb.net)). All credit for the app and engine
+> goes to the AnkiDroid and Anki projects; distributed under the same **GNU
+> AGPL-3.0-or-later**. The upstream AnkiDroid README follows below.
+>
+> **What this fork adds** (the MCAT layer, all on the shared Rust engine — no
+> Kotlin scheduler):
+> - **Bottom-nav app shell** mirroring the desktop rail — **Decks / Browse /
+>   Progress / More** (the redundant slide-out drawer is removed).
+> - **Three honest scores** — Memory / Performance / Readiness, each with a range
+>   and a give-up rule — on the home-screen header and a dedicated **Progress** tab
+>   (per-section detail; graphs on their own page), from the **same Rust RPCs** as
+>   desktop.
+> - **Topic-aware interleaving** toggle (⋮ overflow → "Interleave MCAT topics").
+> - **Decks shown as cards**, import moved into the **+ (add-deck)** menu, and a
+>   trimmed overflow (a single "Manage" submenu) + in-review menu.
+>
+> **Build:** this app consumes the Rust `.aar` from
+> **`Speedrun-Android-Backend`**, whose `anki` submodule pins the engine fork.
+> Rebuild the `.aar`, then `./gradlew assemblePlayDebug` (x86_64 emulator) — full
+> steps are in the engine repo's `docs/speedrun/DEMO_VIDEO.md` → "Android rebuild".
+> The engine + desktop app and the overall architecture live in the engine repo.
+
+---
+
 <p align="center">
 <img alt="" src="docs/graphics/logos/banner_readme.png"/>
 </p>

@@ -364,8 +364,14 @@ class CardBrowserFragment :
             }
         searchBar =
             view.findViewById<SearchBar>(R.id.search_bar)?.apply {
-                setNavigationOnClickListener {
-                    requireNavigationDrawerActivity().onNavigationPressed()
+                if (Prefs.devBottomNavEnabled) {
+                    // Speedrun: Browse is a bottom-nav destination, so there's no
+                    // hamburger/drawer here — the bottom bar is the navigation.
+                    navigationIcon = null
+                } else {
+                    setNavigationOnClickListener {
+                        requireNavigationDrawerActivity().onNavigationPressed()
+                    }
                 }
             }
 

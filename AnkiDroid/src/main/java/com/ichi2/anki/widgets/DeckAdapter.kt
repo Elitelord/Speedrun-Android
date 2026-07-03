@@ -73,6 +73,9 @@ class DeckAdapter(
     private val startPaddingSmall: Int = context.resources.getDimension(R.dimen.deck_picker_left_padding_small).toInt()
     private val nestedIndent = context.resources.getDimension(R.dimen.keyline_1).toInt()
 
+    // Speedrun: vertical padding so deck rows read as cards, not list items.
+    private val cardVerticalPadding: Int = (context.resources.displayMetrics.density * 12).toInt()
+
     // Flags
     private var hasSubdecks = false
 
@@ -131,14 +134,14 @@ class DeckAdapter(
         val node = getItem(position)
         // Set the expander icon and padding according to whether or not there are any subdecks
         if (hasSubdecks) {
-            binding.deckLayout.setPaddingRelative(startPaddingSmall, 0, endPadding, 0)
+            binding.deckLayout.setPaddingRelative(startPaddingSmall, cardVerticalPadding, endPadding, cardVerticalPadding)
             binding.deckExpander.visibility = View.VISIBLE
             // Create the correct expander for this deck
             runBlocking { setDeckExpander(binding.deckExpander, holder.binding.indentView, node) }
         } else {
             binding.deckExpander.visibility = View.GONE
             binding.indentView.minimumWidth = 0
-            binding.deckLayout.setPaddingRelative(startPadding, 0, endPadding, 0)
+            binding.deckLayout.setPaddingRelative(startPadding, cardVerticalPadding, endPadding, cardVerticalPadding)
         }
         if (node.canCollapse) {
             binding.deckExpander.setOnClickListener {
@@ -149,10 +152,11 @@ class DeckAdapter(
             binding.deckExpander.isClickable = false
             binding.deckExpander.setOnClickListener(null)
         }
-        holder.binding.deckLayout.setBackgroundResource(rowCurrentDrawable)
-        // set a different background color for the current selected deck
+        // Speedrun: deck rows render as cards (rounded, bordered); the current
+        // deck gets the highlighted variant.
+        holder.binding.deckLayout.setBackgroundResource(R.drawable.sr_deck_card)
         if (node.isSelected) {
-            holder.binding.deckLayout.setBackgroundResource(rowCurrentDrawable)
+            holder.binding.deckLayout.setBackgroundResource(R.drawable.sr_deck_card_current)
             if (activityHasBackground) {
                 val background =
                     holder.binding.deckLayout.background
@@ -161,7 +165,7 @@ class DeckAdapter(
                 holder.binding.deckLayout.background = background
             }
         } else {
-            holder.binding.deckLayout.setBackgroundResource(selectableItemBackground)
+            holder.binding.deckLayout.setBackgroundResource(R.drawable.sr_deck_card)
         }
         // Set deck name and colour. Filtered decks have their own colour
         binding.deckName.text = node.lastDeckNameComponent

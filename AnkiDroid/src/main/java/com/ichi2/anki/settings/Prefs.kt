@@ -410,7 +410,9 @@ open class PrefsRepository(
         get() = getBoolean(R.string.dev_card_browser_fragmented, false)
 
     val devBottomNavEnabled: Boolean
-        get() = getBoolean(R.string.dev_bottom_nav_key, false)
+        // Speedrun: on by default — this is the app's primary navigation
+        // (Home / Browse / Progress / More), mirroring the desktop rail.
+        get() = getBoolean(R.string.dev_bottom_nav_key, true)
 
     @set:VisibleForTesting
     var devUsingCardBrowserSearchView: Boolean by booleanPref(R.string.dev_card_browser_search_view, false)

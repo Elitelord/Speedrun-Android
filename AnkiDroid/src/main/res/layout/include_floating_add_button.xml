@@ -75,6 +75,23 @@
                 tools:visibility="visible"
                 />
 
+            <!-- Speedrun: import a deck (.apkg/.colpkg) straight from the add menu -->
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/add_import_button"
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:icon="@drawable/ic_file_download_white"
+                android:text="@string/menu_import"
+                android:contentDescription="@string/menu_import"
+                android:focusable="true"
+                android:clickable="true"
+                android:visibility="gone"
+                tools:visibility="visible"
+                />
+
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/fab_main"

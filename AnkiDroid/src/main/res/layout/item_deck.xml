@@ -7,13 +7,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/deck_layout"
-    android:background="?attr/selectableItemBackground"
+    android:background="@drawable/sr_deck_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginTop="8dp"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingStart="@dimen/deck_picker_left_padding"
     android:paddingEnd="@dimen/deck_picker_right_padding"
+    android:paddingVertical="4dp"
     tools:background="@android:color/holo_orange_light">
 
     <ImageButton
